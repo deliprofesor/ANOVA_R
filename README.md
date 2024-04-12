@@ -7,8 +7,7 @@ Veri Manipülasyonun Amacı:
 -Analiz için uygun hale getirmek / belirli analiz tekniklerine uygun formatta sunmak
 
 Bu R kodları, "heart.csv" adlı bir veri seti üzerinde istatistiksel analizler yapar. Analizlerde tidyverse, rstatix, ve ggpubr gibi R paketleri kullanıldı.
-1) Tidyverse, dplyr paketi aracılığıyla veri manipülasyonunu kolaylaştırır. 
-Veri çerçeveleri üzerinde filtreleme, sıralama, gruplama, toplama ve dönüştürme gibi işlemleri hızlı ve etkili bir şekilde yapabilirsiniz.
+1) Tidyverse, dplyr paketi aracılığıyla veri manipülasyonunu kolaylaştırır. Veri çerçeveleri üzerinde filtreleme, sıralama, gruplama, toplama ve dönüştürme gibi işlemleri hızlı ve etkili bir şekilde yapabilirsiniz.
 2)rstatix, t-testleri (bağımsız örneklem t-testi, eşleştirilmiş örneklem t-testi vb.), ANOVA (tek yönlü, iki yönlü, varyans analizi), Mann-Whitney U testi, Kruskal-Wallis testi gibi temel istatistiksel testleri yapmak için kullanılır.Çoklu Karşılaştırmalar: Gruplar arasında çoklu karşılaştırmalar yapmak için kullanılır.Tukey HSD testi, Bonferroni düzeltmesi gibi çoklu karşılaştırma tekniklerini uygular.
 3)ggpubr, ggplot2'den türetilmiş farklı grafik türlerini (yayılım diyagramları, kutu grafikleri, çizgi grafikleri vb.) daha kolay oluşturmayı sağlar ve bu grafik türlerini özelleştirmek için ek işlevler sunar.
  
