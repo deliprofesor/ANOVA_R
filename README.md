@@ -1,6 +1,6 @@
 # ANOVA_R
 
-Sure, here is your text in a B2 English level:
+Data manipulation - Veri Manipülasyonu
 
 Data manipulation is the process of organizing, filtering, transforming, or restructuring data during the data analysis process. Purpose of Data Manipulation:
 
