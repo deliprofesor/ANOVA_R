@@ -1,4 +1,43 @@
 # ANOVA_R
+
+Sure, here is your text in a B2 English level:
+
+Data manipulation is the process of organizing, filtering, transforming, or restructuring data during the data analysis process. Purpose of Data Manipulation:
+
+Increase the understandability of the dataset
+Cleanse unnecessary information
+Prepare it for analysis / present it in a suitable format for specific analysis techniques
+These R codes perform statistical analysis on a dataset named "heart.csv." The analysis utilizes R packages such as tidyverse, rstatix, and ggpubr.
+
+Tidyverse simplifies data manipulation through the dplyr package. You can perform operations like filtering, sorting, grouping, summarizing, and transforming on data frames quickly and effectively.
+
+Rstatix is used for basic statistical tests such as t-tests (independent sample t-test, paired sample t-test, etc.), ANOVA (one-way, two-way, analysis of variance), Mann-Whitney U test, Kruskal-Wallis test, etc. It also handles multiple comparisons, applying techniques like Tukey HSD test, Bonferroni correction, etc.
+
+Ggpubr, derived from ggplot2, makes it easier to create various types of plots (scatter plots, box plots, line plots, etc.) and provides additional functions to customize these plots.
+
+The dataset is read from the "heart.csv" file, containing various features related to heart diseases.
+
+ANOVA (Analysis of Variance) is a method used to evaluate differences in variance between groups in statistical analyses. It is often used to determine if the means between groups are statistically significantly different. ANOVA is an important tool for understanding the reasons for differences between groups and for making comparisons between groups.
+
+The basic principle of ANOVA is to partition the total variability between groups into within-group variability and between-group variability. This helps assess whether the differences between groups are random or genuinely significant.
+
+ANOVA is typically used in the following cases:
+
+Comparison Between Three or More Groups: It is used to examine differences among three or more groups, not just between two groups.
+Impact of Categorical Independent Variables: It is used to assess the effect of a categorical independent variable (factor) on a dependent variable. For example, it can be used to examine the effect of different doses of a drug on disease symptoms.
+Evaluation of Group Variances: It is used to determine if the variances between groups are significant. If the variance between groups is statistically significant, it suggests there is a difference between the groups.
+ANOVA comes in different types, usually one-way ANOVA (one factor) and two-way ANOVA (two factors). One-way ANOVA examines the effect of one factor, while two-way ANOVA assesses the effects and interactions of two factors.
+
+Tukey HSD (Honestly Significant Difference) is a multiple comparison test used to determine significant differences between groups in statistical analyses. It is often used in conjunction with ANOVA to identify which groups differ significantly from each other. This test is conducted after an ANOVA test identifies a significant difference between groups. Tukey HSD test helps determine which groups are different from each other by providing p-values indicating significant mean differences between groups.
+
+Statistical Analyses
+
+Two-Way Analysis of Variance (ANOVA): The analysis was performed using the code 'anova_1 <- aov(df$chol ~ as.factor(df$cp) * as.factor(df$fbs)).' The results were summarized using 'summary(anova_1).'
+rstatix Usage: The analysis conducted with 'anova_test(df, dv= chol, between = c(cp, fbs))' did not yield significance.
+Tukey HSD Test: The analysis results using 'TukeyHSD(anova_1)' were visualized with 'a <- tukey_hsd(anova_1).'
+Boxplot Graphs: Comparisons of trestbps values among different groups were made using 'ggboxplot' functions.
+Outlier Detection: Outliers in the trestbps variable were identified using the 'identify_outliers(heart["trestbps"])' function. A new dataset was created by removing outliers ('df_new'). Comparisons of trestbps values between groups were made using 'ggboxplot' and 'TukeyHSD.'
+
 Veri manipülasyonu
 veri analizi sürecinde verilerin düzenlenmesi, filtrelenmesi, dönüştürülmesi veya yeniden yapılandırılması işlemidir.
 Veri Manipülasyonun Amacı:
