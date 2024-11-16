@@ -38,6 +38,95 @@ Tukey HSD Test: The analysis results using 'TukeyHSD(anova_1)' were visualized w
 Boxplot Graphs: Comparisons of trestbps values among different groups were made using 'ggboxplot' functions.
 Outlier Detection: Outliers in the trestbps variable were identified using the 'identify_outliers(heart["trestbps"])' function. A new dataset was created by removing outliers ('df_new'). Comparisons of trestbps values between groups were made using 'ggboxplot' and 'TukeyHSD.'
 
+Kalp Sağlığı Verisinde İki Yönlü ANOVA Analizi:
+Bu proje, kalp sağlığı ile ilgili bir veri seti üzerinde iki yönlü ANOVA (Analysis of Variance) analizi gerçekleştirmek için kullanılan R kodunu ve süreçlerini içermektedir. Çalışmada, farklı göğüs ağrısı türleri (cp) ve açlık kan şekeri durumlarına (fbs) bağlı olarak kolesterol (chol) ve dinlenme kan basıncı (trestbps) değişkenlerindeki farkların istatistiksel olarak anlamlı olup olmadığı incelenmiştir.
+
+Kullanılan Kütüphaneler
+Analiz sürecinde aşağıdaki R kütüphaneleri kullanılmıştır:
+
+1) Tidyverse, dplyr paketi aracılığıyla veri manipülasyonunu kolaylaştırır. Veri çerçeveleri üzerinde filtreleme, sıralama, gruplama, toplama ve dönüştürme gibi işlemleri hızlı ve etkili bir şekilde yapabilirsiniz.
+
+2)rstatix, t-testleri (bağımsız örneklem t-testi, eşleştirilmiş örneklem t-testi vb.), ANOVA (tek yönlü, iki yönlü, varyans analizi), Mann-Whitney U testi, Kruskal-Wallis testi gibi temel istatistiksel testleri yapmak için kullanılır.Çoklu Karşılaştırmalar: Gruplar arasında çoklu karşılaştırmalar yapmak için kullanılır.Tukey HSD testi, Bonferroni düzeltmesi gibi çoklu karşılaştırma tekniklerini uygular.
+
+3)ggpubr, ggplot2'den türetilmiş farklı grafik türlerini (yayılım diyagramları, kutu grafikleri, çizgi grafikleri vb.) daha kolay oluşturmayı sağlar ve bu grafik türlerini özelleştirmek için ek işlevler sunar.
+
+library(tidyverse)
+library(rstatix)
+library(ggpubr)
+
+Veri Seti
+Veri, kalp sağlığı ile ilgili değişkenleri içermektedir. Önemli değişkenler:
+
+cp: Göğüs ağrısı türleri (kategorik).
+fbs: Açlık kan şekeri durumu (kategorik).
+chol: Kolesterol seviyeleri (sayısal).
+trestbps: Dinlenme kan basıncı (sayısal).
+Veri seti, dosyadan aşağıdaki komut ile okunmuştur:
+
+R
+Kodu kopyala
+heart <- read.csv("/home/yorgun/r_tube/Rcode/ANOVA-MANOVA/heart.csv")
+View(heart)
+Adımlar
+1. Veri Filtreleme
+Kolesterol değerleri 400'ün altında olan bireyler incelendi. Bu, uç değerlerin analiz sonuçlarını etkilemesini önlemek için yapılmıştır.
+
+R
+Kodu kopyala
+df <- heart %>% filter(chol < 400)
+2. Normallik ve Varyans Homojenliği Testleri
+Shapiro-Wilk Testi: Normallik testi.
+Bartlett Testi: Varyansların homojenliğini kontrol eder.
+R
+Kodu kopyala
+df %>% group_by(cp, fbs) %>% summarise(Shapiro = shapiro.test(chol)$p.value)
+bartlett.test(df$chol ~ interaction(df$cp, df$fbs))
+3. İki Yönlü ANOVA
+Kolesterol Üzerinde İki Yönlü ANOVA
+Farklı göğüs ağrısı türleri ve açlık kan şekeri durumlarının kolesterol seviyelerine etkisi incelendi:
+R
+Kodu kopyala
+anova_1 <- aov(df$chol ~ as.factor(df$cp) * as.factor(df$fbs))
+summary(anova_1)
+Dinlenme Kan Basıncı Üzerinde İki Yönlü ANOVA
+Benzer analiz, dinlenme kan basıncı için tekrarlandı:
+R
+Kodu kopyala
+anova_1 <- aov(df$trestbps ~ as.factor(df$cp) * as.factor(df$fbs))
+summary(anova_1)
+4. Tukey HSD Post-Hoc Testi
+ANOVA sonucunda anlamlı farklılık bulunan gruplar için Tukey HSD testi ile detaylı analiz yapıldı.
+
+R
+Kodu kopyala
+TukeyHSD(anova_1)
+a <- tukey_hsd(anova_1)
+View(a)
+5. Grafikler
+Boxplot Grafikler ile gruplar arasındaki farklar görselleştirildi:
+
+Kolesterol için:
+R
+Kodu kopyala
+ggboxplot(df, x = c("cp", "fbs"), y = "chol")
+Dinlenme kan basıncı için, gruplar birleştirilerek özel bir görselleştirme yapıldı:
+R
+Kodu kopyala
+int_groups <- apply(df_new, MARGIN = 1, FUN = function(x){
+                r <- paste0(x["cp"], ' - ', x["fbs"])
+                return(r)
+})
+df_new$int_groups <- int_groups
+
+ggboxplot(df_new, x = "int_groups", y = "trestbps", 
+                title ="Boxplot Grafigi", color = "orange")
+Sonuçlar
+Normallik ve varyans homojenliği testleri, analiz için gerekli varsayımların sağlandığını gösterdi.
+İki yönlü ANOVA sonuçları:
+Kolesterol üzerinde anlamlı bir etkileşim bulunamadı.
+Dinlenme kan basıncı üzerinde anlamlı farklar gözlemlendi.
+Post-hoc test sonuçları, hangi gruplar arasında farklılık olduğunu ortaya koydu.
+
 Veri manipülasyonu
 veri analizi sürecinde verilerin düzenlenmesi, filtrelenmesi, dönüştürülmesi veya yeniden yapılandırılması işlemidir.
 Veri Manipülasyonun Amacı:
@@ -45,12 +134,7 @@ Veri Manipülasyonun Amacı:
 -Gereksiz bilgileri temizlemek
 -Analiz için uygun hale getirmek / belirli analiz tekniklerine uygun formatta sunmak
 
-Bu R kodları, "heart.csv" adlı bir veri seti üzerinde istatistiksel analizler yapar. Analizlerde tidyverse, rstatix, ve ggpubr gibi R paketleri kullanıldı.
-1) Tidyverse, dplyr paketi aracılığıyla veri manipülasyonunu kolaylaştırır. Veri çerçeveleri üzerinde filtreleme, sıralama, gruplama, toplama ve dönüştürme gibi işlemleri hızlı ve etkili bir şekilde yapabilirsiniz.
 
-2)rstatix, t-testleri (bağımsız örneklem t-testi, eşleştirilmiş örneklem t-testi vb.), ANOVA (tek yönlü, iki yönlü, varyans analizi), Mann-Whitney U testi, Kruskal-Wallis testi gibi temel istatistiksel testleri yapmak için kullanılır.Çoklu Karşılaştırmalar: Gruplar arasında çoklu karşılaştırmalar yapmak için kullanılır.Tukey HSD testi, Bonferroni düzeltmesi gibi çoklu karşılaştırma tekniklerini uygular.
-
-3)ggpubr, ggplot2'den türetilmiş farklı grafik türlerini (yayılım diyagramları, kutu grafikleri, çizgi grafikleri vb.) daha kolay oluşturmayı sağlar ve bu grafik türlerini özelleştirmek için ek işlevler sunar.
  
 Veri seti "heart.csv" dosyasından okunmuştur. Bu veri seti kalp hastalıklarıyla ilgili çeşitli özellikleri içerir.
 
